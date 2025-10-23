@@ -29,7 +29,7 @@ public:
             vector<Tile*> v;
             for(int j = 0; j < width; j++){
                 bool color = current;
-                pair<int, int> position = {i, j};
+                pair<char, int> position = {i + 'a', 8 - j};
 
                 v.push_back(new Tile(color, position));
 
@@ -55,6 +55,27 @@ public:
                 board[i][j]->place_Piece(new Pawn(color));
             }
         }
+    }
+
+    bool move_Piece(Tile* current, Tile* target){
+        if(current->get_Piece() == nullptr) return false;
+        Piece* p = current->get_Piece();
+        if(target->get_Piece() == nullptr){
+            if(p->valid_move(current, target)){
+                current->remove_Piece();
+                target->place_Piece(p);
+                return true;
+            }
+        }
+        else{
+            if(p->valid_capture(current, target)){
+                target->remove_Piece();
+                current->remove_Piece();
+                target->place_Piece(p);
+                return true;
+            }
+        }
+        return false;
     }
 
     void SetColor(const std::string& color) {

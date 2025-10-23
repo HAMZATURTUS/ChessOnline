@@ -1,7 +1,7 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-//#include "../Board/Tile.h"
+class Tile;
 
 class Piece {
 
@@ -15,9 +15,11 @@ public:
         this->color = color;
     }
 
-    char get_Representation(){
-        return rep;
-    }
+    virtual bool valid_move(Tile* current, Tile* target) = 0;
+    virtual bool valid_capture(Tile* current, Tile* target) = 0;
+
+    char get_Representation(){ return rep; }
+    char get_Color(){ return color; }
 };
 
 

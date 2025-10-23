@@ -7,8 +7,10 @@
 using namespace std;
 int main (int argc, char** argv) {
     
-    Board* b = new Board();
-    b->show_Board();
+    Game* g = new Game();
+    
+    g->start_Game();
+
     cout << "all good\n";
     
     return 0;

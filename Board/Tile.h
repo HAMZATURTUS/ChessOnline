@@ -9,7 +9,7 @@ using namespace std;
 class Tile {
 private:
     bool color;
-    pair<int, int> position;
+    pair<char, int> position;
 
     Piece* current_Piece = nullptr;
 
@@ -27,9 +27,15 @@ public:
     void place_Piece(Piece* piece){
         this->current_Piece = piece;
     }
+    void remove_Piece(){
+        delete this->current_Piece;
+    }
 
     Piece* get_Piece(){
         return current_Piece;
+    }
+    pair<char, int> get_Position(){
+        return position;
     }
 
 };
