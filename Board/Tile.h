@@ -32,7 +32,14 @@ public:
     }
 
     Piece* get_Piece(){ return current_Piece; }
-    bool get_Piece_Color(){ return current_Piece->get_Color(); }
+    bool get_Piece_Color(){
+        if(current_Piece == nullptr) return false;
+        return current_Piece->get_Color();
+    }
+    char get_Piece_Type(){
+        if(current_Piece == nullptr) return '0';
+        else return current_Piece->get_Piece_Type();
+    }
     pair<char, int> get_Position(){ return position; }
 
 };

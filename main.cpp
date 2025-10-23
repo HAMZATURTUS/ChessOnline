@@ -10,8 +10,6 @@ int main (int argc, char** argv) {
     Game* g = new Game();
     
     g->start_Game();
-
-    cout << "all good\n";
     
     return 0;
 }

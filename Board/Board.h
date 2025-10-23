@@ -6,6 +6,8 @@
 #include "Tile.h"
 #include "../Pieces/Piece.h"
 #include "../Pieces/Pawn.h"
+#include "../Pieces/King.h"
+#include "../Pieces/Knight.h"
 
 
 class Board {
@@ -47,12 +49,17 @@ public:
                 else if(i >= 6) color = true;
                 else continue;
 
-                Piece* add;
+                Piece* add = nullptr;
                 if(i == 1 || i == 6){
                     add = new Pawn(color);
                 }
-                else continue;
-                board[i][j]->place_Piece(new Pawn(color));
+                else{
+                    switch(j){
+                        case 1: case 6: add = new Knight(color); break;
+                        case 4: add = new King(color); break;
+                    }
+                }
+                if(add != nullptr) board[i][j]->place_Piece(add);
             }
         }
     }

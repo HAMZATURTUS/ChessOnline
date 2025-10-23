@@ -23,7 +23,6 @@ public:
         pair<char, int> current_pos = current->get_Position();
         pair<char, int> target_pos = target->get_Position();
 
-        cout << "current " << current_pos.first << " " << current_pos.second << "\n";
 
         if(current_pos.first != target_pos.first) return false;
         int y_target = -1;

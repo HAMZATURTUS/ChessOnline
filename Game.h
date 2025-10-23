@@ -30,6 +30,8 @@ public:
             turn = !turn;
             current_Board->show_Board();
         }
+
+        cout << "Game Over\n";
         
 
     }
@@ -54,8 +56,15 @@ public:
             Tile* current = get_Tile(pl, 0);
             Tile* target = get_Tile(pl, 1);
 
+            bool king_on_target = false;
+            if(target->get_Piece_Type() == 'k') king_on_target = true;
             
             if(current_Board->move_Piece(current, target)){
+
+                if(king_on_target){
+                    game_Running = false;
+                    return;
+                }
 
                 Piece* moved = target->get_Piece();
                 pair<char, int> position = target->get_Position();
@@ -63,6 +72,7 @@ public:
                     if(position.second == 1 || position.second == 8){
                         promote_Pawn(target);
                     }
+                    return;
                 }
 
                 return;
@@ -78,6 +88,7 @@ public:
 
         cout << "Pawn reached end of board\n";
         char s;
+        bool color = target->get_Piece_Color();
         target->remove_Piece();
         while(true){
             cout << "Select piece to promote to (Q, R, B, N): ";
@@ -87,7 +98,7 @@ public:
                 case 'Q': return;
                 case 'R': return;
                 case 'B': return;
-                case 'N': return;
+                case 'N': target->place_Piece(new Knight(color)); return;
             }
         }
 
