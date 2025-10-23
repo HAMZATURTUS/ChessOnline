@@ -1,14 +1,17 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Board/Board.h"
+
 #include <string>
 
 class Player {
 
 private:
-
+    bool color = false;
 public:
+    Player(bool color){
+        this->color = color;
+    }
 
     string get_Current(){
 
@@ -28,6 +31,8 @@ public:
 
         return out;
     }
+
+    bool get_Color(){ return color; }
 
 };
 

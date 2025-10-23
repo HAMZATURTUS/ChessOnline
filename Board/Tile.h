@@ -28,15 +28,12 @@ public:
         this->current_Piece = piece;
     }
     void remove_Piece(){
-        delete this->current_Piece;
+        this->current_Piece = nullptr;
     }
 
-    Piece* get_Piece(){
-        return current_Piece;
-    }
-    pair<char, int> get_Position(){
-        return position;
-    }
+    Piece* get_Piece(){ return current_Piece; }
+    bool get_Piece_Color(){ return current_Piece->get_Color(); }
+    pair<char, int> get_Position(){ return position; }
 
 };
 

@@ -18,8 +18,14 @@ public:
     virtual bool valid_move(Tile* current, Tile* target) = 0;
     virtual bool valid_capture(Tile* current, Tile* target) = 0;
 
-    char get_Representation(){ return rep; }
+    char get_Representation(){
+        if(color){
+            return rep - 32;
+        }
+        return rep;
+    }
     char get_Color(){ return color; }
+    virtual char get_Piece_Type() = 0;
 };
 
 

@@ -11,6 +11,10 @@ private:
 public:
     Pawn(bool color) : Piece(color) {
         rep = 'p';
+        /*
+        if(color) rep = 'W';
+        else rep = 'B';
+        */
     }
 
     bool valid_move(Tile* current, Tile* target){
@@ -18,6 +22,8 @@ public:
 
         pair<char, int> current_pos = current->get_Position();
         pair<char, int> target_pos = target->get_Position();
+
+        cout << "current " << current_pos.first << " " << current_pos.second << "\n";
 
         if(current_pos.first != target_pos.first) return false;
         int y_target = -1;
@@ -53,8 +59,9 @@ public:
         if(this->color == true){
             y_target = 1;
         }
-        if(target_pos.second - current_pos.first == y_target){
-            if(abs(target_pos.second - current_pos.first) == 1) return true;
+        
+        if(target_pos.second - current_pos.second == y_target){
+            if(abs(target_pos.first - current_pos.first) == 1) return true;
         }
 
         return false;
@@ -64,6 +71,8 @@ public:
     bool canbe_enpassant_victim(){
         return last_move_was_double;
     }
+
+    char get_Piece_Type(){ return 'p'; }
 
 };
 

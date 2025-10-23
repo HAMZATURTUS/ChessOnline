@@ -29,7 +29,7 @@ public:
             vector<Tile*> v;
             for(int j = 0; j < width; j++){
                 bool color = current;
-                pair<char, int> position = {i + 'a', 8 - j};
+                pair<char, int> position = {j + 'a', 8 - i};
 
                 v.push_back(new Tile(color, position));
 
@@ -101,6 +101,10 @@ public:
         }
         SetColor("\033[0m"); 
         cout << "\n";
+    }
+
+    Tile* get_Tile(int i, int j){
+        return board[i][j];
     }
 
 };
