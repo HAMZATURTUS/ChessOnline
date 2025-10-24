@@ -12,7 +12,6 @@ protected:
     char rep; // p = pawn, K = king, Q = queen ...
     
 public:
-
     Piece(bool color){
         this->color = color;
     }

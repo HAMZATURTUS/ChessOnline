@@ -9,6 +9,8 @@
 #include "../Pieces/King.h"
 #include "../Pieces/Knight.h"
 #include "../Pieces/Bishop.h"
+#include "../Pieces/Rook.h"
+#include "../Pieces/Queen.h"
 
 
 class Board {
@@ -56,8 +58,10 @@ public:
                 }
                 else{
                     switch(j){
+                        case 0: case 7: add = new Rook(color); break;
                         case 1: case 6: add = new Knight(color); break;
                         case 2: case 5: add = new Bishop(color); break;
+                        case 3: add = new Queen(color); break;
                         case 4: add = new King(color); break;
                     }
                 }
