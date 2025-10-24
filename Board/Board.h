@@ -8,6 +8,7 @@
 #include "../Pieces/Pawn.h"
 #include "../Pieces/King.h"
 #include "../Pieces/Knight.h"
+#include "../Pieces/Bishop.h"
 
 
 class Board {
@@ -56,6 +57,7 @@ public:
                 else{
                     switch(j){
                         case 1: case 6: add = new Knight(color); break;
+                        case 2: case 5: add = new Bishop(color); break;
                         case 4: add = new King(color); break;
                     }
                 }
@@ -64,22 +66,67 @@ public:
         }
     }
 
+    bool check_clear_path(Tile* current, Tile* target){
+
+        
+        pair<char, int> current_pos = current->get_Position();
+        pair<char, int> target_pos = target->get_Position();
+        
+        int x = target_pos.first - current_pos.first;
+        int y = target_pos.second - current_pos.second;
+        
+        if(abs(x) == 1 || abs(y) == 1) return true;
+
+        int xx = 0, yy = 0;
+        if(x < 0) xx = -1;
+        else if(x > 0) xx = 1;
+        
+        if(y < 0) yy = -1;
+        else if(y > 0) yy = 1;
+
+        x = current_pos.first;
+        y = current_pos.second;
+        x += xx; y += yy;
+
+        
+        while(x != target_pos.first || y != target_pos.second){
+
+            Tile* mid = get_Tile_Coords(x, y);
+            if(mid->get_Piece() != nullptr) return false;
+
+            x += xx; y += yy;
+        }
+
+
+        return true;
+
+    }
+    
+
     bool move_Piece(Tile* current, Tile* target){
         if(current->get_Piece() == nullptr) return false;
         Piece* p = current->get_Piece();
         if(target->get_Piece() == nullptr){
             if(p->valid_move(current, target)){
-                current->remove_Piece();
-                target->place_Piece(p);
-                return true;
+
+                if(check_clear_path(current, target)){
+
+                    current->remove_Piece();
+                    target->place_Piece(p);
+                    return true;
+                }
             }
         }
         else{
             if(p->valid_capture(current, target)){
-                target->remove_Piece();
-                current->remove_Piece();
-                target->place_Piece(p);
-                return true;
+
+                if(check_clear_path(current, target)){
+
+                    target->remove_Piece();
+                    current->remove_Piece();
+                    target->place_Piece(p);
+                    return true;
+                }
             }
         }
         return false;
@@ -111,6 +158,24 @@ public:
     }
 
     Tile* get_Tile(int i, int j){
+        
+        if(i < 0 || i > 7 || j < 0 || j > 7){
+            cout << i << j << " is out of bounds\n";
+            return nullptr;
+        }
+
+        return board[i][j];
+    }
+
+    Tile* get_Tile_Coords(char a, int n){
+
+        if(a > 'h' || a < 'a' || n < 1 || n > 8){
+            cout << (int)a << n << " is out of bounds\n";
+            return nullptr;
+        }
+
+        int i = 8 - n;
+        int j = a - 'a';
         return board[i][j];
     }
 
