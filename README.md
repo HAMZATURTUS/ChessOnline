@@ -1,3 +1,3 @@
 # ChessOnline
 
-OOD Chess application made to run on web
+Text based chess game
