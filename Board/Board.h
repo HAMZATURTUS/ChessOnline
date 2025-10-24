@@ -111,6 +111,7 @@ public:
         if(current->get_Piece() == nullptr) return false;
         Piece* p = current->get_Piece();
         if(target->get_Piece() == nullptr){
+
             if(p->valid_move(current, target)){
 
                 if(check_clear_path(current, target)){
@@ -120,8 +121,26 @@ public:
                     return true;
                 }
             }
+            else if(p->get_Piece_Type() == 'p'){
+                pair<char, int> current_pos = current->get_Position();
+                pair<char, int> target_pos = target->get_Position();
+
+                int x = target_pos.first - current_pos.first;
+                int y = target_pos.second - current_pos.second;
+
+                if(abs(x) == 1 && abs(y) == 1){
+                    Tile* mid = get_Tile_Coords(target_pos.first, current_pos.second);
+                    if(p->valid_enpassant(current, mid)){
+                        mid->remove_Piece();
+                        current->remove_Piece();
+                        target->place_Piece(p);
+                        return true;
+                    }
+                }
+            }
         }
         else{
+
             if(p->valid_capture(current, target)){
 
                 if(check_clear_path(current, target)){
@@ -164,7 +183,7 @@ public:
     Tile* get_Tile(int i, int j){
         
         if(i < 0 || i > 7 || j < 0 || j > 7){
-            cout << i << j << " is out of bounds\n";
+            cout << i << " " << j << " is out of bounds\n";
             return nullptr;
         }
 
@@ -174,7 +193,7 @@ public:
     Tile* get_Tile_Coords(char a, int n){
 
         if(a > 'h' || a < 'a' || n < 1 || n > 8){
-            cout << (int)a << n << " is out of bounds\n";
+            cout << char(a) << n << " is out of bounds\n";
             return nullptr;
         }
 

@@ -18,6 +18,11 @@ public:
 
     virtual bool valid_move(Tile* current, Tile* target) = 0;
     virtual bool valid_capture(Tile* current, Tile* target) = 0;
+    
+    virtual bool valid_enpassant(Tile* current, Tile* target){ return false; }
+    virtual bool canbe_enpassant_victim(){ return false; }
+    virtual void set_enpassant_victimcy(){ return; }
+    virtual void rm_enpassant_victimcy(){ return; }
 
     char get_Representation(){
         if(color){

@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include<queue>
+
 #include "Board/Board.h"
 
 #include "gameStuff/Player.h"
@@ -11,6 +13,8 @@ private:
     Board* current_Board = new Board();
     bool turn = true;
     bool game_Running = false;
+
+    queue<Tile*> enpassant_pawns;
 
     Player* white = nullptr;
     Player* black = nullptr;
@@ -66,13 +70,16 @@ public:
                     return;
                 }
 
+                clear_enpassant_pawns();
+
                 Piece* moved = target->get_Piece();
-                pair<char, int> position = target->get_Position();
                 if(moved->get_Piece_Type() == 'p'){
-                    if(position.second == 1 || position.second == 8){
+                    if(should_Promote(current, target)){
                         promote_Pawn(target);
                     }
-                    return;
+                    else if(should_Add_Enpassant(current, target)){
+                        add_enpassant_pawn(target);
+                    }
                 }
 
                 return;
@@ -80,6 +87,56 @@ public:
             
             cout << "Invalid move\n";
 
+        }
+
+    }
+
+    bool should_Promote(Tile* current, Tile* target){
+        Piece* p = target->get_Piece();
+        if(p->get_Piece_Type() != 'p') return false;
+
+
+        pair<char, int> current_pos = current->get_Position();
+        pair<char, int> target_pos = target->get_Position();
+
+        if(target_pos.second == 8 || target_pos.second == 1) return true;
+        return false;
+    }
+
+    bool should_Add_Enpassant(Tile* current, Tile* target){
+        Piece* p = target->get_Piece();
+        if(p->get_Piece_Type() != 'p') return false;
+
+        pair<char, int> current_pos = current->get_Position();
+        pair<char, int> target_pos = target->get_Position();
+
+        int y = target_pos.second - current_pos.second;
+        if(abs(y) == 2) return true;
+        return false;
+
+    }
+
+    void add_enpassant_pawn(Tile* tile){
+        Piece* p = tile->get_Piece();
+
+        if(p == nullptr) return;
+        if(p->get_Piece_Type() != 'p') return;
+
+        p->set_enpassant_victimcy();
+
+        enpassant_pawns.push(tile);
+
+    }
+
+    void clear_enpassant_pawns(){
+
+        while(!enpassant_pawns.empty()){
+            Tile* cur = enpassant_pawns.front();
+            enpassant_pawns.pop();
+
+            Piece* p = cur->get_Piece();
+            if(p == nullptr) continue;
+            p->rm_enpassant_victimcy();
         }
 
     }
@@ -95,11 +152,12 @@ public:
             cin >> s;
             if(s >= 'a') s -= 32;
             switch (s){
-                case 'Q': return;
-                case 'R': return;
-                case 'B': return;
+                case 'Q': target->place_Piece(new Queen(color)); return;
+                case 'R': target->place_Piece(new Rook(color)); return;
+                case 'B': target->place_Piece(new Bishop(color)); return;
                 case 'N': target->place_Piece(new Knight(color)); return;
             }
+            cout << "invalid input\n";
         }
 
     }

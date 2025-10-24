@@ -66,10 +66,41 @@ public:
         return false;
 
     }
+    bool valid_enpassant(Tile* current, Tile* target){
+        pair<char, int> current_pos = current->get_Position();
+        pair<char, int> target_pos = target->get_Position();
 
-    bool canbe_enpassant_victim(){
-        return last_move_was_double;
+        Piece* cur = current->get_Piece();
+        Piece* tar = target->get_Piece();
+
+        if(cur == nullptr || tar == nullptr) return false;
+        if(cur->get_Piece_Type() != 'p' || tar->get_Piece_Type() != 'p') return false;
+
+        int x = target_pos.first - current_pos.first;
+        int y = target_pos.second - current_pos.second;
+
+        if(y != 0) return false;
+        if(abs(x) != 1) return false;
+
+        int vertical_pos = 4;
+
+        if(cur->get_Color()){
+            vertical_pos = 5;
+        }
+
+        if(current_pos.second != vertical_pos) return false;
+        if(tar->canbe_enpassant_victim()) return true;
+
+        return false;
+        
+
     }
+
+    bool canbe_enpassant_victim(){ return last_move_was_double; }
+
+
+    void set_enpassant_victimcy(){ last_move_was_double = true; }
+    void rm_enpassant_victimcy(){ last_move_was_double = false; }
 
     char get_Piece_Type(){ return 'p'; }
 
