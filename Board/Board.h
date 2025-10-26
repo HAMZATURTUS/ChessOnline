@@ -118,6 +118,9 @@ public:
 
                     current->remove_Piece();
                     target->place_Piece(p);
+
+                    p->set_moved();
+                    
                     return true;
                 }
             }
@@ -134,9 +137,46 @@ public:
                         mid->remove_Piece();
                         current->remove_Piece();
                         target->place_Piece(p);
+
+                        p->set_moved();
+
                         return true;
                     }
                 }
+            }
+            else if(p->get_Piece_Type() == 'k' && p->has_moved() == false){
+                pair<char, int> current_pos = current->get_Position();
+                pair<char, int> target_pos = target->get_Position();
+
+                int x = target_pos.first - current_pos.first;
+                int y = target_pos.second - current_pos.second;
+
+                if(y == 0 && abs(x) == 2){
+
+                    bool right = true;
+                    if(x == -2) right = false;
+
+                    bool color = p->get_Color();
+
+                    Tile* other = this->get_Tile_Coords(right ? 'h' : 'a', target_pos.second);
+                    int add = right ? -1 : 1;
+
+                    Piece* rook = other->get_Piece();
+                    if(rook->has_moved() == false && rook->get_Color() == p->get_Color()){
+                        p->set_moved();
+                        rook->set_moved();
+
+                        current->remove_Piece();
+                        target->place_Piece(p);
+
+                        other->remove_Piece();
+                        Tile* rooks_tile = this->get_Tile_Coords(target_pos.first + add, target_pos.second);
+                        rooks_tile->place_Piece(rook);
+                        return true;
+                    }
+
+                }
+
             }
         }
         else{
@@ -148,6 +188,9 @@ public:
                     target->remove_Piece();
                     current->remove_Piece();
                     target->place_Piece(p);
+
+                    p->set_moved();
+                    
                     return true;
                 }
             }

@@ -9,6 +9,7 @@ class Piece {
 
 protected:
     bool color; // true = white, false = black
+    bool moved = false;
     char rep; // p = pawn, K = king, Q = queen ...
     
 public:
@@ -30,8 +31,13 @@ public:
         }
         return rep;
     }
+
+    void set_moved(){ moved = true; }
+
     char get_Color(){ return color; }
+    bool has_moved(){ return moved; }
     virtual char get_Piece_Type() = 0;
+
 };
 
 
