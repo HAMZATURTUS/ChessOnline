@@ -17,10 +17,11 @@ public:
         pair<char, int> current_pos = current->get_Position();
         pair<char, int> target_pos = target->get_Position();
 
+
         int one = abs(current_pos.first - target_pos.first);
         int two = abs(current_pos.second - target_pos.second);
 
-        if(one == 1 || two == 1){
+        if(one <= 1 && two <= 1){
             return true;
         }
 

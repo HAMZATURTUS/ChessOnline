@@ -75,6 +75,16 @@ public:
         
         pair<char, int> current_pos = current->get_Position();
         pair<char, int> target_pos = target->get_Position();
+
+        //cout << (char)current_pos.first << current_pos.second << " " << target_pos.first << target_pos.second << ": ";
+
+        if(current->get_Piece_Color() == target->get_Piece_Color() && target->get_Piece() != nullptr){
+            return false;
+        }
+        if(current->get_Piece_Type() == 'n'){
+            return true;
+        }
+        //cout << current->get_Piece_Type() << "\n";
         
         int x = target_pos.first - current_pos.first;
         int y = target_pos.second - current_pos.second;
@@ -202,6 +212,7 @@ public:
         std::cout << color;
     }
     void show_Board(){
+        cout << "\n\n";
         for(int i = 0; i < length; i++){
             cout << length - i << " ";
             for(int j = 0; j < width; j++){
@@ -221,6 +232,53 @@ public:
         }
         SetColor("\033[0m"); 
         cout << "\n";
+    }
+
+    vector<Tile*> get_Available_Moves(Tile* current){
+        vector<Tile*> ret;
+
+        Piece* p = current->get_Piece();
+
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < width; j++){
+                Tile* target = this->get_Tile(i, j);
+                if(target == current) continue;
+                if((p->valid_move(current, target) || p->valid_capture(current, target)) && (check_clear_path(current, target))){
+                    ret.push_back(target); continue;
+                }
+                else if(p->get_Piece_Type() == 'p' && p->valid_enpassant(current, target)){
+                    pair<char, int> target_pos = target->get_Position();
+                    int add = 1;
+                    if(p->get_Color() == false) add = -1;
+                    ret.push_back(this->get_Tile_Coords(target_pos.first, target_pos.second + add)); continue;
+                }
+                else if(p->get_Piece_Type() == 'k' && p->has_moved() == false){
+                    pair<char, int> current_pos = current->get_Position();
+                    pair<char, int> target_pos = target->get_Position();
+
+                    int x = target_pos.first - current_pos.first;
+                    int y = target_pos.second - current_pos.second;
+
+                    if(y == 0 && abs(x) == 2){
+
+                        bool right = true;
+                        if(x == -2) right = false;
+
+                        bool color = p->get_Color();
+
+                        Tile* other = this->get_Tile_Coords(right ? 'h' : 'a', target_pos.second);
+                        int add = right ? -1 : 1;
+
+                        Piece* rook = other->get_Piece();
+                        if(rook->has_moved() == false && rook->get_Color() == p->get_Color()){
+                            ret.push_back(target); continue;
+                        }
+
+                    }
+                }
+            }
+        }
+        return ret;
     }
 
     Tile* get_Tile(int i, int j){

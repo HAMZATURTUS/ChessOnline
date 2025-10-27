@@ -57,7 +57,26 @@ public:
         while(true){
             cout << prin << "\'s move\n";
 
-            Tile* current = get_Tile(pl, 0);
+            Tile* current = nullptr;
+            while(true){
+                current = get_Tile(pl, 0);
+
+                vector<Tile*> available = current_Board->get_Available_Moves(current);
+
+                if(available.size() == 0){
+                    cout << "No available moves, pick another piece\n";
+                    continue;
+                }
+
+                cout << "Available moves: ";
+                for(Tile* x : available){
+                    pair<char, int> pos = x->get_Position();
+                    cout << (char)pos.first << pos.second << " ";
+                }
+                cout << "\n";
+                break;
+            }
+
             Tile* target = get_Tile(pl, 1);
 
             bool king_on_target = false;
