@@ -233,6 +233,51 @@ public:
         SetColor("\033[0m"); 
         cout << "\n";
     }
+    void show_Board(bool color){
+        cout << "\n\n";
+        
+        if(color == 0){
+            for(int i = 0; i < length; i++){
+                cout << length - i << " ";
+                for(int j = 0; j < width; j++){
+                    Piece* p = board[i][j]->get_Piece();
+                    if(p == nullptr){
+                        cout << ".";
+                    }
+                    else cout << p->get_Representation();
+                    cout << " ";
+                }
+                cout << "\n";
+            }
+            cout << "  ";
+            SetColor("\033[32m");
+            for(char i = 'a'; i <= 'h'; i++){
+                cout << i << " ";
+            }
+            SetColor("\033[0m"); 
+        }
+        else{
+            for(int i = length - 1; i >= 0; i--){
+                cout << length - i << " ";
+                for(int j = width - 1; j >= 0; j--){
+                    Piece* p = board[i][j]->get_Piece();
+                    if(p == nullptr){
+                        cout << ".";
+                    }
+                    else cout << p->get_Representation();
+                    cout << " ";
+                }
+                cout << "\n";
+            }
+            cout << "  ";
+            SetColor("\033[32m");
+            for(char i = 'h'; i >= 'a'; i--){
+                cout << i << " ";
+            }
+            SetColor("\033[0m"); 
+        }
+            cout << "\n";
+    }
 
     vector<Tile*> get_Available_Moves(Tile* current){
         vector<Tile*> ret;

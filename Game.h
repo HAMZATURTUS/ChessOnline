@@ -31,8 +31,8 @@ public:
         while(game_Running){
             move(turn);
 
+            current_Board->show_Board(turn);
             turn = !turn;
-            current_Board->show_Board();
         }
 
         cout << "Game Over\n";
