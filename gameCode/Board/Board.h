@@ -312,8 +312,25 @@ public:
 
                         bool color = p->get_Color();
 
-                        Tile* other = this->get_Tile_Coords(right ? 'h' : 'a', target_pos.second);
-                        int add = right ? -1 : 1;
+                        char side = right ? 'h' : 'a';
+                        Tile* other = this->get_Tile_Coords(side, target_pos.second);
+                        int add = right ? 1 : -1;
+
+                        int xx = current_pos.first + add, yy = current_pos.second;
+                        bool fail = false;
+                        while((char)xx != side){
+
+                            
+                            Tile* o = this->get_Tile_Coords(xx, target_pos.second);
+                            Piece* p = o->get_Piece();
+                            if(p != nullptr){
+                                fail = true; break;
+                            }
+
+                            xx += add;
+                        }
+
+                        if(fail) continue;
 
                         Piece* rook = other->get_Piece();
                         if(rook->has_moved() == false && rook->get_Color() == p->get_Color()){
