@@ -9,7 +9,7 @@
 
 class Game {
 
-private:
+public:
     Board* current_Board = new Board();
     bool turn = true;
     bool game_Running = false;
@@ -19,7 +19,7 @@ private:
     Player* white = nullptr;
     Player* black = nullptr;
 
-public:
+
     void start_Game(){
         white = new Player(true);
         black = new Player(false);
