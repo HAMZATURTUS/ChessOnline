@@ -1,0 +1,23 @@
+.container {
+    display: grid;
+    justify-content: center;
+}
+
+.tile {
+    width: 80px;
+    height: 80px;
+}
+.tile:hover {
+    border: 3px solid rgb(0, 0, 0);
+}
+.tile-selected {
+    border: 3px solid rgb(0, 0, 0);
+}
+.tile-black {
+    background-color: rgb(99, 39, 39);
+    color: white;
+}
+.tile-white {
+    background-color: rgb(223, 223, 223);
+}
+

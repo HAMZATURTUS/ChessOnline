@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chess Online</title>
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<div class="container">
+			<script type="text/javascript">
+				var color = true;
+				for(var i = 8; i >= 1; i--){
+					document.write("<div class='line'>");
+					for(var j = 97; j < 97 + 8; j++){
+						var label = (String.fromCharCode(j) + "" + i);
+						var tile_label = color ? "white" : "black";
+						document.write("<button onclick='clickTile(\""+ label +"\")' class='tile tile-"+ tile_label +"' id='" + label + "'>"+ label + "</button>");
+						color = !color;
+					}
+					color = !color;
+					document.write("</div>");
+				}
+			</script>
+		</div>
+
+		<script>
+			function firstSelect(label) {
+
+				const selectedTiles = document.querySelectorAll('.tile-selected');
+				selectedTiles.forEach(tile => {
+					tile.classList.remove('tile-selected');
+				});
+
+				document.getElementById(label).classList.add("tile-selected");
+			}
+			function clickTile(label){
+
+				firstSelect(label);
+				
+			}
+		</script>
+		<!--<script async type="text/javascript" src="main.js"></script>-->
+	</body>
+</html>
