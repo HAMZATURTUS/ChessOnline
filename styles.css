@@ -12,6 +12,13 @@
 }
 .tile-selected {
     border: 3px solid rgb(0, 0, 0);
+    background-color: rgba(26, 26, 87, 0.5) !important;
+}
+.tile-available {
+    background-color: rgb(26, 87, 26) !important;
+}
+.tile-capture {
+    background-color: rgb(87, 26, 26) !important;
 }
 .tile-black {
     background-color: rgb(99, 39, 39);

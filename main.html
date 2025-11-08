@@ -23,21 +23,89 @@
 		</div>
 
 		<script>
-			function firstSelect(label) {
+			function clearHighlights() {
+				const availableTiles = document.querySelectorAll('.tile-available');
+				availableTiles.forEach(tile => {
+					tile.classList.remove('tile-available');
+				});
 
+				const captureTiles = document.querySelectorAll('.tile-capture');
+				availableTiles.forEach(tile => {
+					tile.classList.remove('tile-capture');
+				});
+				
 				const selectedTiles = document.querySelectorAll('.tile-selected');
 				selectedTiles.forEach(tile => {
 					tile.classList.remove('tile-selected');
 				});
+			}
+
+			function highlightMoves(moves) {
+
+				let n = moves.size();
+
+				for(var i = 0; i < n; i++){
+
+					var move = moves.get(i);
+
+					var attack = 0;
+					if(move[0] == "1") attack = 1;
+
+
+					var label = move.slice(-2);
+					var tile = document.getElementById(label);
+
+					
+
+					if(attack) tile.classList.add("tile-capture");
+					else tile.classList.add("tile-available");
+
+				}
+
+			}
+
+			function firstSelect(label) {
 
 				document.getElementById(label).classList.add("tile-selected");
+
+				const moves = Module.getAvailableMoves(label);
+				
+				highlightMoves(moves);
+				
+			}
+			function secondSelect(label){
+				Module.makeMove(label);
 			}
 			function clickTile(label){
 
+
+
+				if(Module.hasPiece(label) != Module.getTurn()){
+					var target = document.getElementById(label);
+					console.log(target.classList);
+					if(target.classList.contains("tile-available") || target.classList.contains("tile-capture")){
+						secondSelect(label);
+					}
+					clearHighlights();
+					return;
+				}
+
+				clearHighlights();
 				firstSelect(label);
 				
 			}
 		</script>
-		<!--<script async type="text/javascript" src="main.js"></script>-->
+		<script type="text/javascript" src="main.js"></script>
+		<script>
+			// Wait for Wasm runtime to initialize
+			if (typeof Module !== 'undefined') {
+				Module.onRuntimeInitialized = function() {
+				Module.makeBoard();  // Init the board
+				console.log('Wasm loaded and board initialized');
+				};
+			} else {
+				console.error('Module not defined - check main.js loading');
+			}
+		</script>
 	</body>
 </html>
