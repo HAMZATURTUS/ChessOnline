@@ -9,7 +9,9 @@
 using namespace std;
 
 Board* b;
-Tile* first;
+Tile* current;
+
+queue<Tile*> enpassant_pawns;
 
 bool turn = true;
 
@@ -32,8 +34,8 @@ int hasPiece(string tile){
 
 vector<string> getAvailableMoves(string start){
     
-    first = b->get_Tile_Coords(start[0], start[1] - '0');
-    vector<Tile*> vect = b->get_Available_Moves(first);
+    current = b->get_Tile_Coords(start[0], start[1] - '0');
+    vector<Tile*> vect = b->get_Available_Moves(current);
     vector<string> ret;
     
     for(Tile* x : vect){
@@ -52,9 +54,54 @@ vector<string> getAvailableMoves(string start){
     
 }
 
+bool should_Add_Enpassant(Tile* current, Tile* target){
+    Piece* p = target->get_Piece();
+    if(p->get_Piece_Type() != 'p') return false;
+
+    pair<char, int> current_pos = current->get_Position();
+    pair<char, int> target_pos = target->get_Position();
+
+    int y = target_pos.second - current_pos.second;
+    if(abs(y) == 2) return true;
+    return false;
+
+}
+
+void add_enpassant_pawn(Tile* tile){
+    Piece* p = tile->get_Piece();
+
+    if(p == nullptr) return;
+    if(p->get_Piece_Type() != 'p') return;
+
+    p->set_enpassant_victimcy();
+
+    enpassant_pawns.push(tile);
+
+}
+
+void clear_enpassant_pawns(){
+
+    while(!enpassant_pawns.empty()){
+        Tile* cur = enpassant_pawns.front();
+        enpassant_pawns.pop();
+
+        Piece* p = cur->get_Piece();
+        if(p == nullptr) continue;
+        p->rm_enpassant_victimcy();
+    }
+
+}
+
 void makeMove(string end){
-    b->move_Piece(first, b->get_Tile_Coords(end[0], end[1] - '0'));
+
+    Tile* target = b->get_Tile_Coords(end[0], end[1] - '0');
+
+    b->move_Piece(current, b->get_Tile_Coords(end[0], end[1] - '0'));
     turn = !turn;
+
+    clear_enpassant_pawns();
+    if(should_Add_Enpassant(current, target)) add_enpassant_pawn(target);
+
 }
 
 string getPieceType(string label){
