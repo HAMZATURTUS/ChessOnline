@@ -5,24 +5,38 @@
 		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
-		<div class="container">
-			<script type="text/javascript">
-				var color = true;
-				for(var i = 8; i >= 1; i--){
-					document.write("<div class='line'>");
-					for(var j = 97; j < 97 + 8; j++){
-						var label = (String.fromCharCode(j) + "" + i);
-						var tile_label = color ? "white" : "black";
-						document.write("<button onclick='clickTile(\""+ label +"\")' class='tile tile-"+ tile_label +"' id='" + label + "'>"+ label + "</button>");
-						color = !color;
-					}
-					color = !color;
-					document.write("</div>");
-				}
-			</script>
+		<div class="container" id="board-container">
+			
 		</div>
 
 		<script>
+			function generateBoard() {
+				const container = document.getElementById('board-container');
+				let html = '';
+				let color = true;
+				for (let i = 8; i >= 1; i--) {
+					html += "<div class='line'>";
+						for (let j = 97; j < 97 + 8; j++) {
+							let label = (String.fromCharCode(j) + "" + i);
+							let tile_label = color ? "white" : "black";
+							
+							var piece = Module.getPieceType(label);
+							var pieceColor = "";
+
+							if(piece != "0"){
+								pieceColor = Module.getPieceColor(label) ? "w" : "b";
+							}
+							else piece = "";
+						
+							html += "<button onclick='clickTile(\"" + label + "\")' class='tile tile-" + tile_label + " "+ piece + pieceColor +"' id='" + label + "'><span></span></button>";
+							color = !color;
+					}
+					color = !color;
+					html += "</div>";
+				}
+				container.innerHTML = html;
+			}
+
 			function clearHighlights() {
 				const availableTiles = document.querySelectorAll('.tile-available');
 				availableTiles.forEach(tile => {
@@ -30,7 +44,7 @@
 				});
 
 				const captureTiles = document.querySelectorAll('.tile-capture');
-				availableTiles.forEach(tile => {
+				captureTiles.forEach(tile => {
 					tile.classList.remove('tile-capture');
 				});
 				
@@ -38,6 +52,27 @@
 				selectedTiles.forEach(tile => {
 					tile.classList.remove('tile-selected');
 				});
+			}
+
+			function updatePieces() {
+				for (let i = 8; i >= 1; i--) {
+						for (let j = 97; j < 97 + 8; j++) {
+							let label = (String.fromCharCode(j) + "" + i);
+							
+							var piece = Module.getPieceType(label);
+							var pieceColor = "";
+
+							const tile = document.getElementById(label);
+							tile.className = tile.className.replace(/ [a-z][wb]/, '');
+
+							if(piece != "0"){
+								pieceColor = Module.getPieceColor(label) ? "w" : "b";
+
+								tile.classList.add(piece + pieceColor);
+							}
+						
+					}
+				}
 			}
 
 			function highlightMoves(moves) {
@@ -75,6 +110,8 @@
 			}
 			function secondSelect(label){
 				Module.makeMove(label);
+				clearHighlights();
+				updatePieces();
 			}
 			function clickTile(label){
 
@@ -97,10 +134,11 @@
 		</script>
 		<script type="text/javascript" src="main.js"></script>
 		<script>
-			// Wait for Wasm runtime to initialize
+			
 			if (typeof Module !== 'undefined') {
 				Module.onRuntimeInitialized = function() {
-				Module.makeBoard();  // Init the board
+				Module.makeBoard();
+				generateBoard();
 				console.log('Wasm loaded and board initialized');
 				};
 			} else {

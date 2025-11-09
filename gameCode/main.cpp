@@ -57,6 +57,22 @@ void makeMove(string end){
     turn = !turn;
 }
 
+string getPieceType(string label){
+    Tile* t = b->get_Tile_Coords(label[0], label[1] - '0');
+
+    string s = "";
+    if(t->get_Piece() != nullptr) s.push_back(t->get_Piece_Type());
+    else s = "0";
+
+    return s;
+}
+
+bool getPieceColor(string label){
+    Tile* t = b->get_Tile_Coords(label[0], label[1] - '0');
+
+    return t->get_Piece_Color();
+}
+
 int main (int argc, char** argv) {
     
     return 0;
@@ -74,6 +90,8 @@ EMSCRIPTEN_BINDINGS(module) {
     emscripten::function("hasPiece", &hasPiece);
     emscripten::function("getAvailableMoves", &getAvailableMoves);
     emscripten::function("makeMove", &makeMove);
+    emscripten::function("getPieceType", &getPieceType);
+    emscripten::function("getPieceColor", &getPieceColor);
     
     
     emscripten::register_vector<string>("vector<string>");

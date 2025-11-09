@@ -2,6 +2,23 @@
     display: grid;
     justify-content: center;
 }
+.line {
+    height: 80px;
+    display: flex;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button span {
+    width: 60px;
+    height: 60px;
+    display: block;
+    background-size: contain;
+}
 
 .tile {
     width: 80px;
@@ -12,7 +29,7 @@
 }
 .tile-selected {
     border: 3px solid rgb(0, 0, 0);
-    background-color: rgba(26, 26, 87, 0.5) !important;
+    background-color: rgb(87, 87, 26) !important;
 }
 .tile-available {
     background-color: rgb(26, 87, 26) !important;
@@ -21,10 +38,22 @@
     background-color: rgb(87, 26, 26) !important;
 }
 .tile-black {
-    background-color: rgb(99, 39, 39);
+    background-color: rgb(39, 39, 99);
     color: white;
 }
 .tile-white {
     background-color: rgb(223, 223, 223);
 }
 
+.pw span{ background-image: url("pieces/pw.png"); }
+.pb span{ background-image: url("pieces/pb.png"); }
+.rw span{ background-image: url("pieces/rw.png"); }
+.rb span{ background-image: url("pieces/rb.png"); }
+.bw span{ background-image: url("pieces/bw.png"); }
+.bb span{ background-image: url("pieces/bb.png"); }
+.nw span{ background-image: url("pieces/nw.png"); }
+.nb span{ background-image: url("pieces/nb.png"); }
+.qw span{ background-image: url("pieces/qw.png"); }
+.qb span{ background-image: url("pieces/qb.png"); }
+.kw span{ background-image: url("pieces/kw.png"); }
+.kb span{ background-image: url("pieces/kb.png"); }
