@@ -92,6 +92,40 @@ void clear_enpassant_pawns(){
 
 }
 
+bool should_Promote(Tile* target){
+    Piece* p = target->get_Piece();
+    if(p->get_Piece_Type() != 'p') return false;
+
+
+    pair<char, int> target_pos = target->get_Position();
+
+    if(target_pos.second == 8 || target_pos.second == 1) return true;
+    return false;
+}
+
+bool should_Promote_js(string label){
+    Tile* target = b->get_Tile_Coords(label[0], label[1] - '0');
+    return should_Promote(target);
+}
+
+void promote_Pawn(string label, string choice){
+
+    Tile* target = b->get_Tile_Coords(label[0], label[1] - '0');
+    
+    char s = choice[0];
+    bool color = target->get_Piece_Color();
+    target->remove_Piece();
+    
+    if(s >= 'a') s -= 32;
+    switch (s){
+        case 'Q': target->place_Piece(new Queen(color)); return;
+        case 'R': target->place_Piece(new Rook(color)); return;
+        case 'B': target->place_Piece(new Bishop(color)); return;
+        case 'N': target->place_Piece(new Knight(color)); return;
+    }
+
+}
+
 void makeMove(string end){
 
     Tile* target = b->get_Tile_Coords(end[0], end[1] - '0');
@@ -139,6 +173,8 @@ EMSCRIPTEN_BINDINGS(module) {
     emscripten::function("makeMove", &makeMove);
     emscripten::function("getPieceType", &getPieceType);
     emscripten::function("getPieceColor", &getPieceColor);
+    emscripten::function("shouldPromote", &should_Promote_js);
+    emscripten::function("promotePawn", &promote_Pawn);
     
     
     emscripten::register_vector<string>("vector<string>");

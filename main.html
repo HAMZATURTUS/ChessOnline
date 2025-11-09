@@ -9,7 +9,16 @@
 			
 		</div>
 
+		<div id="promotion-modal">
+			<div id="promo-options">
+				
+			</div>
+		</div>
+
 		<script>
+
+			var promoting = false;
+
 			function generateBoard() {
 				const container = document.getElementById('board-container');
 				let html = '';
@@ -110,16 +119,23 @@
 			}
 			function secondSelect(label){
 				Module.makeMove(label);
+
+				if(Module.shouldPromote(label)){
+					promoting = true;
+					showPromotionUI(label);
+					return;
+				}
+
 				clearHighlights();
 				updatePieces();
 			}
 			function clickTile(label){
 
-
+				if(promoting) return;
 
 				if(Module.hasPiece(label) != Module.getTurn()){
 					var target = document.getElementById(label);
-					console.log(target.classList);
+					
 					if(target.classList.contains("tile-available") || target.classList.contains("tile-capture")){
 						secondSelect(label);
 					}
@@ -131,6 +147,32 @@
 				firstSelect(label);
 				
 			}
+
+			function showPromotionUI(label) {
+				const isWhite = Module.getPieceColor(label);
+				const colorSuffix = isWhite ? 'w' : 'b';
+				const pieces = ['q', 'r', 'b', 'n'];
+				let html = '';
+				pieces.forEach(p => {
+					html += `<button class="promo-btn ${p}${colorSuffix}" onclick="choosePromotion('${label}', '${p}')"><span></span></button>`;
+				});
+				document.getElementById('promo-options').innerHTML = html;
+				document.getElementById('promotion-modal').style.display = 'flex';
+			}
+
+			function hidePromotionUI() {
+				document.getElementById('promotion-modal').style.display = 'none';
+			}
+
+			function choosePromotion(label, choice) {
+				Module.promotePawn(label, choice);
+
+				hidePromotionUI();
+				promoting = false;
+				clearHighlights();
+				updatePieces();
+			}
+
 		</script>
 		<script type="text/javascript" src="main.js"></script>
 		<script>

@@ -57,3 +57,37 @@ button span {
 .qb span{ background-image: url("pieces/qb.png"); }
 .kw span{ background-image: url("pieces/kw.png"); }
 .kb span{ background-image: url("pieces/kb.png"); }
+
+
+#promotion-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+#promo-options {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.promo-btn {
+    width: 80px;
+    height: 80px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+.promo-btn:hover {
+    transform: scale(1.1);
+}
