@@ -1,7 +1,24 @@
+body {
+    background-color: #97d7e2;
+}
+
 .container {
     display: grid;
     justify-content: center;
 }
+
+.container2 {
+    border: 5px solid #ebe5d7;
+}
+
+.container3 {
+    border: 20px solid #42717b;
+}
+
+.container4 {
+    border: 40px solid #73a9b3;
+}
+
 .line {
     height: 80px;
     display: flex;
@@ -11,6 +28,10 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0; /* Ensure no padding affects size */
+    border: none; /* Remove default button borders */
+    background: transparent; /* Make button background transparent */
+    cursor: pointer; /* Change cursor on hover */
 }
 
 button span {
@@ -18,46 +39,76 @@ button span {
     height: 60px;
     display: block;
     background-size: contain;
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent image repeat */
+    transition: transform 0.2s ease; /* Smooth scaling transition */
+}
+
+.tile-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center elements */
+}
+
+.tile-wrapper:hover .tile {
+    background-color: rgba(87, 87, 26, 0.5) !important; /* Change color on hover without size change */
+}
+
+
+.tile-wrapper:has(.tile-available) {
+    background-color: rgba(26, 87, 26, 1); /* Adjust hover color */
+}
+
+.tile-wrapper:has(.tile-capture) {
+    background-color: rgba(87, 26, 26, 1); /* Adjust hover color */
+}
+
+.tile-wrapper:has(.tile-selected) {
+    background-color: rgba(87, 87, 26, 1); /* Adjust hover color */
+}
+
+.tile-wrapper:has(.tile-available):hover .tile, .tile-wrapper:has(.tile-capture):hover .tile, .tile-wrapper:has(.tile-selected):hover .tile {
+    background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .tile {
     width: 80px;
     height: 80px;
+    border: 0;
+    transition: background-color 0.3s; /* Smooth color transition */
 }
-.tile:hover {
-    border: 3px solid rgb(0, 0, 0);
+
+.tile-available, .tile-capture, .tile-selected {
+    margin: auto;
+    height: 80%;
+    width: 80%;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.28) !important;
 }
-.tile-selected {
-    border: 3px solid rgb(0, 0, 0);
-    background-color: rgb(87, 87, 26) !important;
-}
-.tile-available {
-    background-color: rgb(26, 87, 26) !important;
-}
-.tile-capture {
-    background-color: rgb(87, 26, 26) !important;
-}
+
 .tile-black {
-    background-color: rgb(39, 39, 99);
-    color: white;
+    background-color: #8ac5d3;
 }
+
 .tile-white {
-    background-color: rgb(223, 223, 223);
+    background-color: #e5fdff;
 }
 
-.pw span{ background-image: url("pieces/pw.png"); }
-.pb span{ background-image: url("pieces/pb.png"); }
-.rw span{ background-image: url("pieces/rw.png"); }
-.rb span{ background-image: url("pieces/rb.png"); }
-.bw span{ background-image: url("pieces/bw.png"); }
-.bb span{ background-image: url("pieces/bb.png"); }
-.nw span{ background-image: url("pieces/nw.png"); }
-.nb span{ background-image: url("pieces/nb.png"); }
-.qw span{ background-image: url("pieces/qw.png"); }
-.qb span{ background-image: url("pieces/qb.png"); }
-.kw span{ background-image: url("pieces/kw.png"); }
-.kb span{ background-image: url("pieces/kb.png"); }
 
+.pw span { background-image: url("pieces/pw.png"); }
+.pb span { background-image: url("pieces/pb.png"); }
+.rw span { background-image: url("pieces/rw.png"); }
+.rb span { background-image: url("pieces/rb.png"); }
+.bw span { background-image: url("pieces/bw.png"); }
+.bb span { background-image: url("pieces/bb.png"); }
+.nw span { background-image: url("pieces/nw.png"); }
+.nb span { background-image: url("pieces/nb.png"); }
+.qw span { background-image: url("pieces/qw.png"); }
+.qb span { background-image: url("pieces/qb.png"); }
+.kw span { background-image: url("pieces/kw.png"); }
+.kb span { background-image: url("pieces/kb.png"); }
 
 #promotion-modal {
     display: none;
@@ -71,14 +122,16 @@ button span {
     align-items: center;
     justify-content: center;
 }
+
 #promo-options {
     background: white;
     padding: 30px;
     border-radius: 15px;
     display: flex;
     gap: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
+
 .promo-btn {
     width: 80px;
     height: 80px;
@@ -88,6 +141,7 @@ button span {
     transition: transform 0.2s ease;
     position: relative;
 }
+
 .promo-btn:hover {
     transform: scale(1.1);
 }
