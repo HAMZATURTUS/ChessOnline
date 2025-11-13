@@ -1,12 +1,10 @@
 # ChessOnline
 
-Text based chess game
+Text based c++ chess game turned into a web app using webassembly
 
-Run like any basic cpp application
+Run by making an http server and accessing main.html through http://0.0.0.0/main.html
 
 ```
-g++ main.cpp
-./a.out
+python3 -m http.server
 ```
 
-For each move, select a piece by giving a starting tile as input, then move it by giving a target tile as input
